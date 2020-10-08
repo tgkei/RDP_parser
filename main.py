@@ -22,7 +22,9 @@ def arg_parse():
 def main():
     test_case, problem = arg_parse()
     test_input = TESTCASE[test_case]
-    #print(f"Test case: {test_case}: {test_input}")
+
+    if test_case in [1, 2, 3, 4]:
+        print(f"Test case: {test_case}: {test_input}")
 
     print("Start Parser")
     scanner = Scanner(test_input)
@@ -34,7 +36,7 @@ def main():
     if parser.is_matched:
         print("String matched")
     et = time()
-    print(f"time spent: {st - et}")
+    print(f"time spent: {et - st}")
 
 
 if __name__ == "__main__":
