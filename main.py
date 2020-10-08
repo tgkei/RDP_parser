@@ -1,7 +1,12 @@
+from sys import setrecursionlimit
 from argparse import ArgumentParser
 from scanner import Scanner
 from parser import PARSER
 from testcase import TESTCASE
+from time import time
+
+
+setrecursionlimit(99999999)
 
 
 def arg_parse():
@@ -17,16 +22,19 @@ def arg_parse():
 def main():
     test_case, problem = arg_parse()
     test_input = TESTCASE[test_case]
-    print(f"Test case: {test_case}: {test_input}")
+    #print(f"Test case: {test_case}: {test_input}")
 
     print("Start Parser")
     scanner = Scanner(test_input)
     scanner.tokenize()
 
+    st = time()
     parser = PARSER[problem](scanner)
     parser.pD()
     if parser.is_matched:
         print("String matched")
+    et = time()
+    print(f"time spent: {st - et}")
 
 
 if __name__ == "__main__":

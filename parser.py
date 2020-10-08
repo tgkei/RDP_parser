@@ -81,13 +81,6 @@ class Parser2:
         self.is_matched = False
         self.next_symbol = scanner.get_next_symbol()
 
-    def pD(self):
-        if self.next_symbol in ["label", "integer"]:
-            self.next_symbol = self.scanner.get_next_symbol()
-            self._pL()
-        else:
-            print_error(1)
-
     def _is_id(self):
         for keyword in ["label", "integer"]:
             if self.next_symbol == keyword:
@@ -101,25 +94,26 @@ class Parser2:
 
         return True
 
-    def _pL(self):
-        if self._is_id():
-            self.next_symbol = self.scanner.get_next_symbol()
-            self._pR()
-        else:
-            print_error(2)
+    def pD(self):
+        is_error = True
 
-    def _pR(self):
-        if self.next_symbol == ',':
+        if self.next_symbol in ["label", "integer"]:
             self.next_symbol = self.scanner.get_next_symbol()
-            self._pL()
-        elif self.next_symbol == ";":
-            self.next_symbol = self.scanner.get_next_symbol()
-            if self.next_symbol != "$":
-                print_error(4)
-            else:
-                self.is_matched = True
-        else:
-            print_error(3)
+            if self._is_id():
+                self.next_symbol = self.scanner.get_next_symbol()
+                while self.next_symbol == ',':
+                    self.next_symbol = self.scanner.get_next_symbol()
+                    if self._is_id():
+                        self.next_symbol = self.scanner.get_next_symbol()
+
+                if self.next_symbol == ';':
+                    self.next_symbol = self.scanner.get_next_symbol()
+                    if self.next_symbol == "$":
+                        is_error = False
+        if is_error:
+            print_error(5)
+
+        self.is_matched = not is_error
 
 
 PARSER = {
