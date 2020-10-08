@@ -21,6 +21,7 @@ class Scanner:
                 terminal, string = self._tokenize_terminal(string)
                 token.append(terminal)
 
+        token.append("$")
         self.token = token
 
     def _is_terminal(self, string):
@@ -79,6 +80,3 @@ class Scanner:
         ret = self.token[self.idx]
         self.idx += 1
         return ret
-
-    def is_finished(self):
-        return self.idx == len(self.token)
